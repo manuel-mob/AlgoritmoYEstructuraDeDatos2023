@@ -27,6 +27,48 @@ void addNode(struct node **headRef,struct node *newNode){
     }
 }
 
+void push(struct node **headRef,struct node *newNode){
+    newNode->next = *headRef;
+    *headRef = newNode;
+}
+
+struct node* pop(struct node **headRef){
+    if ( *headRef == NULL ) {
+        printf("stack is empty");
+        exit(0);
+    }
+    struct node *temp = *headRef;
+    *headRef = temp->next;
+    temp->next = NULL;
+    return temp;
+}
+
+void enqueue(struct node **headRef, struct node **tailRef, struct node *newNode) {
+    if (*headRef == NULL) {
+        *headRef = newNode;
+    } else {
+        (*tailRef)->next = newNode;
+    }
+    *tailRef = newNode;
+}
+
+struct node* dequeue(struct node **headRef, struct node **tailRef) {
+    if (*headRef == NULL) {
+        printf("Error: queue underflow.");
+        exit(1);
+    }
+    struct node* dequeuedNode = *headRef;
+    *headRef = (*headRef)->next;
+    if (*headRef == NULL) {
+        *tailRef = NULL;
+    }
+    dequeuedNode->next = NULL;
+    return dequeuedNode;
+}
+
+
+
+
 void printNodes(struct node *headRef){
     struct node *current = headRef;
     while (current != NULL){
@@ -67,8 +109,60 @@ int getSize(struct node *headRef){
 }
 
 int main () {
-    struct node *begin = NULL;
+
+
     struct node *newNode;
+    printf("\n\t//QUEUE\n\n");
+    //QUEUE FIFO
+    // Values are 4,7,9
+    // 9 Last
+    // 7
+    // 4 First
+    struct node *queque = NULL;
+    struct node *tail = NULL;
+    newNode = createNode(4);
+    enqueue(&queque,&tail,newNode);
+    newNode = createNode(7);
+    enqueue(&queque,&tail,newNode);
+    newNode = createNode(9);
+    enqueue(&queque,&tail,newNode);
+    printNodes(queque);
+    struct node *tempNode = dequeue(&queque,&tail);
+    printf("Out of queue: %d\n",tempNode->data);
+    free(tempNode);
+    tempNode = dequeue(&queque,&tail);
+    printf("Out of queue: %d\n",tempNode->data);
+    free(tempNode);
+    printNodes(queque);
+
+    printf("\n\t//STACK\n\n");
+    //STACK LIFO
+    // Values are 4,7,9
+    // 9 Last
+    // 7
+    // 4 First
+    struct node *stack = NULL;
+    newNode = createNode(4);
+    push(&stack,newNode);
+    newNode = createNode(7);
+    push(&stack,newNode);
+    newNode = createNode(9);
+    push(&stack,newNode);
+    printNodes(stack);
+    struct node *poped = pop(&stack);
+    printf("Pop: %d\n",poped->data);
+    free(poped);
+    poped = pop(&stack);
+    printf("Pop: %d\n",poped->data);
+    free(poped);
+    printNodes(stack);
+    //STACK END
+
+
+    struct node *begin = NULL;
+
+    printf("\n\t//LIST\n\n");
+    //LIST
     //Values 2,5,8
     //Create and x 3 
     newNode = createNode(2);
