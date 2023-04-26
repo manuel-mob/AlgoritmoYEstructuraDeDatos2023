@@ -52,17 +52,61 @@ void printTree(Node* root) {
     printTree(root->right);
 }
 
+Node* findMin(Node* root) {
+    while (root->left != NULL) {
+        root = root->left;
+    }
+    return root;
+}
+
+Node* deleteNode(Node* root, int data) {
+    //cout << " data:" << data << "vs root->data:" << root->data << endl;
+    if (root == NULL) {
+        return root;
+    }
+    else if (data < root->data) {
+        root->left = deleteNode(root->left, data);
+    }
+    else if (data > root->data) {
+        root->right = deleteNode(root->right, data);
+    }
+    else {
+        if (root->left == NULL && root->right == NULL) {
+            delete root;
+            root = NULL;
+        }
+        else if (root->left == NULL) {
+            Node* temp = root;
+            root = root->right;
+            delete temp;
+        }
+        else if (root->right == NULL) {
+            Node* temp = root;
+            root = root->left;
+            delete temp;
+        }
+        else {
+            Node* temp = findMin(root->right);
+            root->data = temp->data;
+            root->right = deleteNode(root->right, temp->data);
+        }
+    }
+    return root;
+}
 
 int main() {
     Node* root = NULL;
-    root = insert(root, 10);
     root = insert(root, 5);
-    root = insert(root, 15);
+    root = insert(root, 8);
     root = insert(root, 3);
-    root = insert(root, 7);
-    root = insert(root, 12);
-    root = insert(root, 20);
+    root = insert(root, 11);
+    root = insert(root, 9);
+    root = insert(root, 1);
+    root = insert(root, 3);
     
+    printTree(root);
+    cout << endl;
+
     if (search(root, 5)) {
         cout << "5 is in the tree." << endl;
     }
@@ -84,7 +128,11 @@ int main() {
         cout << "20 is not in the tree." << endl;
     }
     
+    deleteNode(root,5);
+    cout << endl;
+
     printTree(root);
+    cout << endl;
 
     return 0;
 }
