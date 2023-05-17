@@ -85,6 +85,13 @@ int myStrLenFuntion(string value){
     return value.length();
 }
 
+/* Algorithm created to work with a list and read strings from the keyboard to transform them to integers. */
+/* 
+    dependencies:
+    struct Node 
+    void addNewNode(Node** head, int newData)
+    void printNodes(Node* head)
+    void statsNodes(Node* head) */
 void statsFromIntegers(){
     // char to int and value for exit
     //xithttps://en.cppreference.com/w/cpp/utility/from_chars
@@ -112,6 +119,32 @@ void statsFromIntegers(){
     statsNodes(head);
 }
 
+int factorial(int n) {
+    if (n == 0) {
+        return 1;
+    } else {
+        return n * factorial(n-1);
+    }
+}
+
+int fibonacci(int n) {
+    if (n <= 1) {
+        return n;
+    } else {
+        return fibonacci(n-1) + fibonacci(n-2);
+    }
+}
+
+bool isPalindrome(string str) {
+    if (str.length() <= 1) {
+        return true;
+    }
+    if (str[0] == str[str.length()-1]) {
+        return isPalindrome(str.substr(1, str.length()-2));
+    }
+    return false;
+}
+
 /* Main function of Lab 7*/
 int main (){
     //Ex1
@@ -127,6 +160,28 @@ int main (){
     //Ex4
     statsFromIntegers();
 
+    //Ex5
+    int valueFactorial;
+    cout << "Factorial of (integer)?:";
+    cin >> valueFactorial;
+    cout << factorial(valueFactorial);
 
+    //Ex6
+    int number;
+    cout << "Fibonnaci (integer)?:";
+    cin >> number;
+    cout << "Fibonacci sequence at " << number << " is " << fibonacci(number) << endl;
+
+    //Ex7
+    string input;
+    cout << "Enter a word or phrase: " << endl;
+    cin >> input;
+    if (isPalindrome(input)) {
+        cout << input << " is a palindrome" << endl;
+    } else {
+        cout << input << " is not a palindrome" << endl;
+    }
+
+    return 0;
 
 }
