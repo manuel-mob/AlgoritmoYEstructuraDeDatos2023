@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <cstring>
 #include <vector>
 
 struct Guardian {
@@ -63,6 +64,26 @@ public:
         printGuardian(root, 0);
     }
 
+    Guardian* getRoot(){
+        return root;
+    }
+
+    Guardian* findGuardianFromVillage(Guardian* guardian, const std::string& village) {
+        if (guardian != nullptr) {
+            if (strcmp(guardian->village.c_str(),village.c_str()) == 0) {
+                //std::cout << guardian->village << " vs " << village << " " << strcmp(guardian->village.c_str(),village.c_str())  <<std::endl;
+                return guardian;
+            }
+            for (Guardian* aprendiz : guardian->aprendices) {
+                return findGuardianFromVillage(aprendiz, village);
+            }
+        }
+        //return in case of village not found
+        return nullptr;
+    }
+
+   
+
 private:
     std::vector<Guardian*> guardians;
     Guardian* root;
@@ -104,5 +125,20 @@ int main() {
     GuardiansTree tree;
     tree.loadGuardiansFromFile("guardians.csv");
     tree.printGuardians();
+    Guardian* master = new Guardian;
+    
+    std::string village = "Forest Village";
+    std::cout << "The village is " << village << std::endl;
+    Guardian* root = tree.getRoot();
+    std::cout << "The Master is " << root->name << std::endl;
+    master = tree.findGuardianFromVillage(root,village);
+    if (master ==  nullptr) {
+        std::cout << "Master is dead" << std::endl;
+    }
+    std::cout << "The master of Island Village is " << master->name << std::endl;
+    std::cout << master->name << " is master of :";
+    for (Guardian* aprendiz : master->aprendices) {
+        std::cout << aprendiz->name << ", ";
+    }
     return 0;
 }
